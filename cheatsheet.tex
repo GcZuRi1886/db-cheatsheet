@@ -46,6 +46,12 @@
                                 {\normalfont\small\bfseries}}
 \makeatother
 
+\def\ojoin{%
+  \rule[-.02ex]{.25em}{.4pt}\llap{\rule[.45em]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt plus 0.5ex}
 
@@ -61,5 +67,46 @@
   \setlength{\multicolsep}{1pt}
   \setlength{\columnsep}{2pt}
 
+\section*{Relationale Algebra}
+\begin{tabular}{|>{\centering\arraybackslash}m{0.5\linewidth}|>{\centering\arraybackslash}m{0.4\linewidth}|}
+\hline
+Operation & Symbol \\
+\hline
+Selektion & $\sigma_{B}(R)$ \\
+\hline
+Projektion & $\pi_{A_1, A_2, \ldots, A_n}(R)$ \\
+\hline
+Vereinigung & $R \cup S$ \\
+\hline
+Bag-Concatenation & $R \sqcup S$ \\
+\hline
+Schnittmenge & $R \cap S$ \\
+\hline
+Differenz & $R - S$ oder $R \backslash S$ \\
+\hline
+Kartesisches Produkt & $R \times S$ \\
+\hline
+Natural Join & $R \bowtie_{B} S$ \\
+\hline
+Full Outer Join & $R \; \fullouterjoin_{B} \; S$ \\
+\hline
+Left Outer Join & $R \; \leftouterjoin_{B} \; S$ \\
+\hline 
+Right Outer Join & $R \; \rightouterjoin_{B} \; S$ \\
+\hline
+Umbenennung & $\rho_{S(B_1, B_2, \ldots, B_n)}(R)$ \\
+\hline
+AND-Verknüpfung & $\sigma_{B_1 \land B_2}(R)$ \\
+\hline
+OR-Verknüpfung & $\sigma_{B_1 \lor B_2}(R)$ \\
+\hline
+Negation & $\sigma_{\neg B}(R)$ \\
+\hline
+Duplikatelöschung & $\delta(R)$ \\
+\hline
+\end{tabular}
+\begin{center}
+  $B$: Bedingung, $A_i$: Attribut, $R$, $S$: Relationen
+\end{center}
 \end{multicols*}
 \end{document}

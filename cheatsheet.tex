@@ -68,7 +68,10 @@
   \setlength{\columnsep}{2pt}
 
 \section*{Relationale Algebra}
-\begin{tabular}{|>{\centering\arraybackslash}m{0.5\linewidth}|>{\centering\arraybackslash}m{0.4\linewidth}|}
+\begin{tabular}{
+    |>{\centering\arraybackslash}m{0.5\linewidth}
+    |>{\centering\arraybackslash}m{0.4\linewidth}|
+}
 \hline
 Operation & Symbol \\
 \hline
@@ -108,5 +111,247 @@ Duplikatelöschung & $\delta(R)$ \\
 \begin{center}
   $B$: Bedingung, $A_i$: Attribut, $R$, $S$: Relationen
 \end{center}
+
+\section*{Äquivalenzregeln}
+\begin{itemize}
+  \item Selektion und Projektion sind kommutativ:
+    \[\sigma_{B_1}(\sigma_{B_2}(R)) = \sigma_{B_2}(\sigma_{B_1}(R))\]
+    \[\pi_{A_1, A_2}(\pi_{A_2, A_1}(R)) = \pi_{A_1, A_2}(R)\]
+  \item Selektion verteilt sich über Vereinigung, Schnittmenge und Differenz:
+    \[\sigma_{B}(R \cup S) = \sigma_{B}(R) \cup \sigma_{B}(S)\]
+    \[\sigma_{B}(R \cap S) = \sigma_{B}(R) \cap \sigma_{B}(S)\]
+    \[\sigma_{B}(R - S) = \sigma_{B}(R) - \sigma_{B}(S)\]
+  \item Projektion über Vereinigung:
+    \[\pi_{A_1, A_2}(R \cup S) = \pi_{A_1, A_2}(R) \cup \pi_{A_1, A_2}(S)\]
+  \item Selektion über Join:
+    \[\sigma_{B}(R \bowtie S) = \sigma_{B}(R) \bowtie S\] (wenn $B$ nur Attribute von $R$ betrifft)
+\end{itemize}
+
+\columnbreak
+
+\section*{Entity-Relationship-Modell}
+\begin{itemize}
+  \item \textbf{ISA-Beziehung}: Vererbung von Attributen und Beziehungen
+    \begin{itemize}
+      \item Genauere Spezifikation 
+      \item Vermeidung von Redundanzen
+    \end{itemize}
+  \item \textbf{ID-Abhängigkeit}: Existenzabhängigkeit eines Entities von einem anderen
+    \begin{itemize}
+      \item Ist ein Entity, dass ohne das übergeordnete Entity nicht existieren kann
+    \end{itemize}
+  \item \textbf{Zusammengesetzter Entitätstyp}: Entity-Typ, der aus mehreren Entity-Typen besteht
+    \begin{itemize}
+      \item Entsteht durch die Kombination Beziehungstypen und Entity-Typen
+      \item Wird durch eine Raute in einem Rechteck dargestellt
+    \end{itemize}
+    \includegraphics[width=\linewidth]{assets/composite-entity-type.png}
+\end{itemize}
+
+\section*{Normalformen}
+\begin{itemize}
+  \item \textbf{1. Normalform (1NF)}: Alle Attribute sind atomar
+  \item \textbf{2. Normalform (2NF)}: Jedes Nicht-Schlüsselattribut ist voll funktional abhängig vom gesamten Primärschlüssel
+  \item \textbf{3. Normalform (3NF)}: Kein Nicht-Schlüsselattribut ist transitiv abhängig vom Primärschlüssel
+  \item \textbf{Boyce-Codd-Normalform (BCNF)}: Alle Attribute hängen nur vom Primärschlüssel ab
+\end{itemize}
+
+\columnbreak
+
+\section*{SQL Befehle}
+\subsection*{Create Table}
+\begin{verbatim}
+CREATE TABLE table_name (
+    column1 datatype [NOT NULL, UNIQUE],
+    column2 datatype [NOT NULL, UNIQUE],
+    ...
+    PRIMARY KEY (column_name)
+);
+\end{verbatim}
+
+\subsection*{Create Foreign Key}
+\begin{verbatim}
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    ...
+    FOREIGN KEY (col) REFERENCES other_tbl(col)
+);
+\end{verbatim}
+
+\subsection*{Delete}
+\begin{verbatim}
+DELETE FROM table_name
+WHERE condition [CASCADE];
+\end{verbatim}
+
+\subsection*{Insert}
+\begin{verbatim}
+INSERT INTO table_name (column1, column2, ...)
+VALUES (value1, value2, ...);
+\end{verbatim}
+
+\subsection*{Update}
+\begin{verbatim}
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition [CASCADE];
+\end{verbatim}
+
+\subsection*{Select}
+\begin{verbatim}
+  SELECT [DISTINCT] [AGG] column1, column2, ...
+FROM table_name
+WHERE [EXISTS] condition;
+\end{verbatim}
+
+\subsection*{Join}
+\begin{verbatim}
+SELECT columns
+FROM table1
+JOIN table2
+ON table1.column = table2.column;
+\end{verbatim}
+
+\columnbreak
+
+\subsection*{Vergleichsoperatoren}
+\begin{tabular}{|>{\centering\arraybackslash}m{0.3\linewidth}|>{\centering\arraybackslash}m{0.6\linewidth}|}
+\hline
+Operator & Bedeutung \\
+\hline
+$=$ & Gleich \\
+\hline
+$<>$ oder $!=$ & Ungleich \\
+\hline
+$>$ & Größer als \\
+\hline
+$<$ & Kleiner als \\
+\hline
+$>=$ & Größer oder gleich \\
+\hline
+$<=$ & Kleiner oder gleich \\
+\hline
+LIKE & ''\_'' für ein Zeichen, ''\%'' für beliebig viele Zeichen \\
+\hline
+IN & Wert ist in einer Liste von Werten (kombinierbar mit ANY) \\
+\hline
+BETWEEN & Wert liegt in einem Bereich \\
+\hline
+IS NULL & Wert ist NULL \\
+\hline
+IS NOT NULL & Wert ist nicht NULL \\
+\hline
+$=\sim$ & Ähnlich (Regulärer Ausdruck) \\
+\hline
+\end{tabular}
+
+\subsection*{Aggregatfunktionen}
+\begin{itemize}
+  \item \textbf{COUNT()}: Zählt die Anzahl der Zeilen
+  \item \textbf{SUM()}: Berechnet die Summe der Werte in einer Spalte
+  \item \textbf{AVG()}: Berechnet den Durchschnitt der Werte in einer Spalte
+  \item \textbf{MIN()}: Gibt den kleinsten Wert in einer Spalte zurück
+  \item \textbf{MAX()}: Gibt den größten Wert in einer Spalte zurück
+\end{itemize}
+
+\subsection*{Gruppierung}
+\begin{verbatim}
+SELECT column1, AGG(column2)
+FROM table_name
+GROUP BY column1;
+\end{verbatim}
+
+\subsection*{Sortierung}
+\begin{verbatim}
+SELECT column1, column2
+FROM table_name
+ORDER BY column1 [ASC|DESC];
+\end{verbatim}
+
+\subsection*{HAVING (Gruppierungsbedingung)}
+\begin{verbatim}
+SELECT column1, AGG(column2)
+FROM table_name
+GROUP BY column1
+HAVING AGG(column2) condition;
+\end{verbatim}
+
+\subsection*{CASE}
+\begin{verbatim}
+SELECT column1,
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    ELSE resultN
+END AS new_column
+FROM table_name;
+\end{verbatim}
+
+\subsection*{Constraints}
+\begin{itemize}
+  \item \textbf{BASIC}: NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY
+  \item \textbf{CHECK}: Stellt sicher, dass alle Werte in einer Spalte eine bestimmte Bedingung erfüllen
+  \item \textbf{DEFAULT}: Legt einen Standardwert für eine Spalte fest, wenn kein Wert angegeben ist
+\end{itemize}
+
+\section*{Triggers and Stored Procedures}
+\begin{itemize}
+  \item \textbf{Stored Procedures}: Vorgefertigte SQL-Befehle, die aufgerufen werden können
+  \item \textbf{Triggers}: Automatisch ausgelöste Aktionen bei bestimmten Ereignissen (INSERT, UPDATE, DELETE)
+\end{itemize}
+
+\subsection*{Stored Procedures}
+\begin{verbatim}
+CREATE PROCEDURE procedure_name (parameters)
+BEGIN
+    SQL statements;
+[EXCEPTION
+    WHEN condition THEN
+        SQL statements; ]
+END;
+\end{verbatim}
+\begin{verbatim}
+CALL procedure_name (arguments);
+\end{verbatim}
+
+\subsection*{Triggers}
+\begin{verbatim}
+CREATE TRIGGER trigger_name
+BEFORE|AFTER INSERT|UPDATE|DELETE
+ON table_name
+FOR EACH ROW
+BEGIN
+    SQL statements;
+END;
+\end{verbatim}
+
+\section*{Datenorganisation}
+\begin{itemize}
+  \item \textbf{Heap-Dateien}: Unsortierte Dateien, schnelle Einfügungen, langsame Suche
+  \item \textbf{Sortierte Dateien}: Sortierte Daten, schnelle Suche, langsame Einfügungen
+  \item \textbf{Hash-Dateien}: Schnelle Suche, langsame Einfügungen und Löschungen
+  \item \textbf{ISAM}: Index-sequentielle Dateien, schnelle Suche und Einfügungen
+  \item \textbf{B-Bäume}: Balancierte Bäume, schnelle Suche, Einfügungen und Löschungen
+\end{itemize}
+
+\section*{Transaktionen}
+\begin{itemize}
+  \item \textbf{ACID-Prinzipien}:
+    \begin{itemize}
+      \item \textbf{Atomicity}: Transaktionen sind unteilbar
+      \item \textbf{Consistency}: Datenbank bleibt konsistent
+      \item \textbf{Isolation}: Transaktionen beeinflussen sich nicht gegenseitig
+      \item \textbf{Durability}: Änderungen sind dauerhaft
+    \end{itemize}
+  \item \textbf{Sperrprotokolle}: Verhindern Inkonsistenzen durch gleichzeitige Transaktionen
+  \item \textbf{Deadlocks}: Situationen, in denen Transaktionen sich gegenseitig blockieren
+\end{itemize}
+\begin{verbatim}
+BEGIN TRANSACTION;
+-- SQL-Befehle
+COMMIT; -- oder ROLLBACK;
+\end{verbatim}
+  
 \end{multicols*}
 \end{document}
